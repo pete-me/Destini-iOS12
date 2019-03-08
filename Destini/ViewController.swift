@@ -28,38 +28,71 @@ class ViewController: UIViewController {
     let story5 = "As you smash through the guardrail and careen towards the jagged rocks below you reflect on the dubious wisdom of stabbing someone while they are driving a car you are in."
     let story6 = "You bond with the murderer while crooning verses of \"Can you feel the love tonight\". He drops you off at the next town. Before you go he asks you if you know any good places to dump bodies. You reply: \"Try the pier.\""
     
+    // Grouped story elements
+    var stories : [String] = []
+    var answersA : [String] = []
+    var answersB : [String] = []
     
     // UI Elements linked to the storyboard
     @IBOutlet weak var topButton: UIButton!         // Has TAG = 1
     @IBOutlet weak var bottomButton: UIButton!      // Has TAG = 2
     @IBOutlet weak var storyTextView: UILabel!
+    @IBOutlet weak var resetButton: UIButton!
     
-    // TODO Step 5: Initialise instance variables here
-    
-    
+    var storyIndex: Int = 1
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        stories = [story1, story2, story3, story4, story5, story6]
+        answersA = [answer1a, answer2a, answer3a]
+        answersB = [answer1b, answer2b, answer3b]
         
-        // TODO Step 3: Set the text for the storyTextView, topButton, bottomButton, and to T1_Story, T1_Ans1, and T1_Ans2
-        
+        reset()
+    
     }
-
     
     // User presses one of the buttons
     @IBAction func buttonPressed(_ sender: UIButton) {
     
-        // TODO Step 4: Write an IF-Statement to update the views
-                
-        // TODO Step 6: Modify the IF-Statement to complete the story
+        if sender.tag == 99 { reset() }
         
-    
+        if storyIndex == 1 && sender.tag == 1 {
+            storyIndex = 3
+        } else if storyIndex == 1 && sender.tag == 2 {
+            storyIndex = 2
+        } else if storyIndex == 2 && sender.tag == 1 {
+            storyIndex = 3
+        } else if storyIndex == 2 && sender.tag == 2 {
+            storyIndex = 4
+        } else if storyIndex == 3 && sender.tag == 1 {
+            storyIndex = 6
+        } else if storyIndex == 3 && sender.tag == 2 {
+            storyIndex = 5
+        }
+        storyTextView.text = stories[storyIndex-1]
+        
+        if storyIndex <= 3 {
+            topButton.isHidden = false
+            bottomButton.isHidden = false
+            topButton.setTitle(answersA[storyIndex-1], for: UIControl.State.normal)
+            bottomButton.setTitle(answersB[storyIndex-1], for: UIControl.State.normal)
+        } else if storyIndex > 3 {
+            topButton.isHidden = true
+            bottomButton.isHidden = true
+            resetButton.isHidden = false
+        }
     }
     
-
-
-
+    func reset() {
+        resetButton.isHidden = true
+        topButton.isHidden = false
+        bottomButton.isHidden = false
+        storyIndex = 1
+        storyTextView.text = story1
+        topButton.setTitle(answer1a, for: UIControl.State.normal)
+        bottomButton.setTitle(answer1b, for: UIControl.State.normal)
+    }
 }
 
